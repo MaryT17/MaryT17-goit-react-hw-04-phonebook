@@ -1,34 +1,27 @@
-import React, { Component } from 'react';
-import css from './ContactListItem.module.css';
+import React from 'react';
+import css from './Filter.module.css';
 import PropTypes from 'prop-types';
-import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-export class ContactListItem extends Component {
-  static propTypes = {
-    filteredContact: PropTypes.object.isRequired,
-    deleteContact: PropTypes.func.isRequired,
+export const Filter = ({ filter, setFilter }) => {
+  const handleFilterChange = e => {
+    setFilter(e.target.value);
   };
 
-  handleDelete = () => {
-    const { filteredContact, deleteContact } = this.props;
-    deleteContact(filteredContact.id);
-    Notify.success(
-      `${filteredContact.name} was successfully deleted from your contacts!`,
-      { position: 'center-top' }
-    );
-  };
+  return (
+    <div className={css.divFilter}>
+      <p>Find Contacts by Name</p>
+      <input
+        type="text"
+        name="filter"
+        placeholder="Search by name"
+        value={filter}
+        onChange={handleFilterChange}
+      />
+    </div>
+  );
+};
 
-  render() {
-    const { filteredContact } = this.props;
-
-    return (
-      <li className={css.contactListItem}>
-        <p>{filteredContact.name}:</p>
-        <p className={css.contactAlign}>{filteredContact.number}</p>
-        <button className={css.btnDelete} onClick={this.handleDelete}>
-          Delete
-        </button>
-      </li>
-    );
-  }
-}
+Filter.propTypes = {
+  filter: PropTypes.string.isRequired,
+  setFilter: PropTypes.func.isRequired,
+};
